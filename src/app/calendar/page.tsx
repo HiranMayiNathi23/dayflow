@@ -61,6 +61,14 @@ function CalendarContent() {
   const [month,    setMonth]    = useState(new Date())
   const [selected, setSelected] = useState(now.getDate())
   const [dayData,  setDayData]  = useState<Record<number, DayData>>({})
+  const [ringSize, setRingSize] = useState(62)
+
+  useEffect(() => {
+    function updateSize() { setRingSize(window.innerWidth < 1024 ? 44 : 62) }
+    updateSize()
+    window.addEventListener('resize', updateSize)
+    return () => window.removeEventListener('resize', updateSize)
+  }, [])
 
   const isCurrentMonth = month.getMonth() === now.getMonth() && month.getFullYear() === now.getFullYear()
   const todayDay = now.getDate()
@@ -202,7 +210,7 @@ function CalendarContent() {
                 const isFuture   = isCurrentM && isCurrentMonth && cell.day > todayDay
                 const isSel      = isCurrentM && cell.day === selected
                 const data       = dayData[cell.day] ?? { habits: 0, tasks: 0, journal: 0 }
-                const size       = 62
+                const size       = ringSize
 
                 return (
                   <div key={idx}
@@ -245,8 +253,8 @@ function CalendarContent() {
             </div>
           </div>
 
-          {/* Right detail panel */}
-          <div className="dark:bg-slate-800 dark:border-slate-700" style={{ width: 240, flexShrink: 0, borderLeft: '1px solid #EDEEF2', background: 'white', display: 'flex', flexDirection: 'column', padding: '24px 20px', gap: 20, overflowY: 'auto' }}>
+          {/* Right detail panel — hidden on mobile, visible on desktop */}
+          <div className="hidden lg:flex dark:bg-slate-800 dark:border-slate-700" style={{ width: 240, flexShrink: 0, borderLeft: '1px solid #EDEEF2', background: 'white', flexDirection: 'column', padding: '24px 20px', gap: 20, overflowY: 'auto' }}>
 
             {/* Selected day */}
             <div>

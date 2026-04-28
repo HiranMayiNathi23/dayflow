@@ -148,7 +148,8 @@ function ScreenTimeContent() {
   return (
     <AppShell>
       {/* Full-screen layout */}
-      <div className="flex flex-col h-[100dvh] overflow-hidden p-3 sm:p-5 pb-20 sm:pb-4 bg-gray-50 dark:bg-slate-950">
+      {/* Mobile: natural scroll. Desktop: fixed height */}
+      <div className="flex flex-col min-h-screen lg:h-[100dvh] lg:overflow-hidden p-3 sm:p-4 pb-24 lg:pb-4 bg-gray-50">
 
         {/* Compact header */}
         <div className="flex-shrink-0 flex items-center justify-between mb-2">
@@ -192,7 +193,7 @@ function ScreenTimeContent() {
         )}
 
         {/* Main card — fills remaining space */}
-        <div className="flex-1 min-h-0 bg-white dark:bg-slate-800 rounded-3xl shadow-md border border-orange-100 dark:border-slate-700 overflow-hidden flex flex-col lg:flex-row">
+        <div className="lg:flex-1 lg:min-h-0 bg-white rounded-3xl shadow-md border border-orange-100 overflow-hidden flex flex-col lg:flex-row">
 
           {/* Top accent bar */}
           <div className="h-1.5 w-full lg:hidden bg-gradient-to-r from-emerald-400 via-amber-400 via-orange-400 to-red-500 flex-shrink-0" />

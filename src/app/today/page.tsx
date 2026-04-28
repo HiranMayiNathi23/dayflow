@@ -147,8 +147,8 @@ function TodayContent() {
           </div>
         </div>
 
-        {/* ── Body — naturally scrollable, works at any zoom level ── */}
-        <div className="flex gap-5 p-5 pb-8 items-start">
+        {/* ── Body — stacks on mobile, side-by-side on desktop ── */}
+        <div className="flex flex-col lg:flex-row gap-4 p-4 pb-24 sm:p-5 sm:pb-8 items-start">
 
           {/* ── Left column — grows with content ── */}
           <div className="flex-1 flex flex-col gap-4 min-w-0">
@@ -174,8 +174,8 @@ function TodayContent() {
             </div>
           </div>
 
-          {/* ── Right column — stacks naturally, no overflow clipping ── */}
-          <div className="w-[300px] flex-shrink-0 flex flex-col gap-4">
+          {/* ── Right column — full width on mobile, fixed 300px on desktop ── */}
+          <div className="w-full lg:w-[300px] lg:flex-shrink-0 flex flex-col gap-4">
 
             {/* Habits */}
             <div className="fu0">

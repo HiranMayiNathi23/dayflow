@@ -208,7 +208,8 @@ function SleepContent() {
         .zzz3 { animation: zzz 2.8s ease-in-out infinite 1.8s; }
       `}</style>
 
-      <div className="flex flex-col h-[100dvh] overflow-hidden p-3 sm:p-5 pb-20 sm:pb-4 bg-gray-50 dark:bg-slate-950">
+      {/* Mobile: natural scroll. Desktop: fixed height */}
+      <div className="flex flex-col min-h-screen lg:h-[100dvh] lg:overflow-hidden p-3 sm:p-4 pb-24 lg:pb-4 bg-gray-50">
 
         {/* Compact header */}
         <div className="flex-shrink-0 flex items-center justify-between mb-2">
@@ -251,7 +252,7 @@ function SleepContent() {
         )}
 
         {/* Main card */}
-        <div className="flex-1 min-h-0 bg-white dark:bg-slate-800 rounded-3xl shadow-md border border-violet-100 dark:border-slate-700 overflow-hidden flex flex-col lg:flex-row">
+        <div className="lg:flex-1 lg:min-h-0 bg-white rounded-3xl shadow-md border border-violet-100 overflow-hidden flex flex-col lg:flex-row">
 
           {/* Accent bars */}
           <div className="h-1.5 w-full lg:hidden bg-gradient-to-r from-red-300 via-amber-300 via-emerald-400 via-violet-500 to-indigo-600 flex-shrink-0" />
