@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python .claude/skills/ui-ux-pro-max/scripts/search.py \"personal journal habit tracker productivity wellness minimal calm\" --design-system -p \"Dayflow\")",
+      "Bash(npm run *)"
+    ]
+  }
+}

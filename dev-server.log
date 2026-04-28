@@ -1,0 +1,40 @@
+
+> dayflow@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.3.0 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.4.28:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1894ms
+ ○ Compiling / ...
+ ✓ Compiled / in 7.7s
+ GET / 200 in 9055ms
+ GET / 200 in 1736ms
+ ○ Compiling /today ...
+ ✓ Compiled /today in 4.2s
+ GET /today 200 in 4588ms
+ GET /today 200 in 4194ms
+ GET /today 200 in 214ms
+ ○ Compiling /calendar ...
+ ✓ Compiled /calendar in 2.9s
+ GET /calendar 200 in 3163ms
+ ○ Compiling /habits ...
+ ✓ Compiled /habits in 3.4s
+ GET /habits 200 in 3716ms
+ ○ Compiling /sleep ...
+ ✓ Compiled /sleep in 3.2s
+ GET /sleep 200 in 3395ms
+ ○ Compiling /screen-time ...
+ ✓ Compiled /screen-time in 2.4s
+ GET /screen-time 200 in 2538ms
+ ○ Compiling /goals ...
+ ✓ Compiled /goals in 2.8s
+ GET /goals 200 in 2941ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 4.1s
+ GET /login 200 in 4363ms
+ GET /calendar 200 in 159ms
+ GET /today 200 in 97ms

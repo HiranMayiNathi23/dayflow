@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 166 60% 97%;
+    --foreground: 172 65% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 172 65% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 172 65% 12%;
+    --primary: 262.1 83.3% 57.8%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 166 40% 94%;
+    --secondary-foreground: 172 65% 18%;
+    --muted: 166 30% 94%;
+    --muted-foreground: 172 20% 45%;
+    --accent: 166 40% 94%;
+    --accent-foreground: 172 65% 18%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 166 20% 88%;
+    --input: 166 20% 88%;
+    --ring: 262.1 83.3% 57.8%;
+    --radius: 0.75rem;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    --font-serif: Georgia, 'Times New Roman', serif;
+    --row-bg: #FAFBFD;
+    --row-border: #F0F0F5;
+    --habit-text: #374151;
+  }
+}
+
+@layer base {
+  html {
+    font-size: 17px;
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-serif);
+  }
+  a {
+    @apply transition-colors duration-200;
+  }
+}
+
+/* Safe area insets for iOS PWA */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
