@@ -8,6 +8,18 @@ import { Button } from '@/components/ui/button'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
 import { formatMonthYear } from '@/lib/utils'
+import { DayPickerDialog } from '@/components/trackers/DayPickerDialog'
+
+const SLEEP_OPTIONS = [
+  { label: '3h',  value: 3,  color: '#f87171' },
+  { label: '4h',  value: 4,  color: '#fbbf24' },
+  { label: '5h',  value: 5,  color: '#fbbf24' },
+  { label: '6h',  value: 6,  color: '#6ee7b7' },
+  { label: '7h',  value: 7,  color: '#34d399' },
+  { label: '8h',  value: 8,  color: '#a78bfa' },
+  { label: '9h',  value: 9,  color: '#7c3aed' },
+  { label: '10h', value: 10, color: '#6366f1' },
+]
 
 // App-palette: red (too little) → amber → emerald (optimal) → violet (great) → indigo (too much)
 const SLEEP_CONFIG = [
@@ -102,8 +114,9 @@ function SleepContent() {
   const { user } = useAuth()
   const [month, setMonth]             = useState(new Date())
   const [data, setData]               = useState<Record<number, number>>({})
-  const [hovered, setHovered]         = useState<number | null>(null)
-  const [saving, setSaving]           = useState(false)
+  const [hovered,      setHovered]      = useState<number | null>(null)
+  const [selectedDay,  setSelectedDay]  = useState<number | null>(null)
+  const [saving,       setSaving]       = useState(false)
   const [showSettings, setShowSettings] = useState(false)
 
   const now = new Date()
@@ -139,33 +152,20 @@ function SleepContent() {
     setData(map)
   }
 
-  async function saveDay(day: number, idx: number) {
+  async function handleDialogSave(day: number, hours: number | null) {
     const logDate = format(new Date(month.getFullYear(), month.getMonth(), day), 'yyyy-MM-dd')
-    if (idx === 0) {
+    setSelectedDay(null)
+    if (hours === null) {
+      setData((p) => { const n = { ...p }; delete n[day]; return n })
       await supabase.from('sleep_logs').delete().eq('user_id', user!.id).eq('log_date', logDate)
     } else {
+      const idx = hours < 4 ? 1 : hours < 6 ? 2 : hours < 8 ? 3 : hours < 10 ? 4 : hours < 12 ? 5 : 6
+      setData((p) => ({ ...p, [day]: idx }))
       await supabase.from('sleep_logs').upsert(
-        { user_id: user!.id, log_date: logDate, hours: SLEEP_CONFIG[idx].hours },
+        { user_id: user!.id, log_date: logDate, hours },
         { onConflict: 'user_id,log_date' }
       )
     }
-  }
-
-  async function handleClick(day: number) {
-    if (isCurrentMonth && day > lastLoggableDay) return
-    const cur  = data[day] ?? 0
-    const next = (cur + 1) % SLEEP_CONFIG.length
-    setData((p) => ({ ...p, [day]: next }))   // optimistic update
-    await saveDay(day, next)
-  }
-
-  async function handleRightClick(day: number, e: React.MouseEvent) {
-    e.preventDefault()
-    if (isCurrentMonth && day > lastLoggableDay) return
-    const cur  = data[day] ?? 0
-    const prev = (cur - 1 + SLEEP_CONFIG.length) % SLEEP_CONFIG.length
-    setData((p) => ({ ...p, [day]: prev }))   // optimistic update
-    await saveDay(day, prev)
   }
 
   async function resetMonth() {
@@ -219,7 +219,7 @@ function SleepContent() {
             <h1 className="text-xl font-serif font-bold text-gray-800">Sleep Tracker</h1>
           </div>
           <div className="flex items-center gap-2">
-            <p className="text-xs text-gray-400 hidden sm:block">Left click ↑ · Right click ↓</p>
+            <p className="text-xs text-gray-400 hidden sm:block">Tap a day to log sleep</p>
             <button
               onClick={() => setShowSettings((s) => !s)}
               className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
@@ -299,8 +299,7 @@ function SleepContent() {
 
                 return (
                   <g key={day}
-                    onClick={() => handleClick(day)}
-                    onContextMenu={(e) => handleRightClick(day, e)}
+                    onClick={() => { if (isActive && !isFuture) setSelectedDay(day) }}
                     onMouseEnter={() => setHovered(day)}
                     onMouseLeave={() => setHovered(null)}
                     style={{ cursor: isActive && !isFuture ? 'pointer' : 'default' }}
@@ -363,7 +362,7 @@ function SleepContent() {
             </svg>
 
             <p className="flex-shrink-0 text-center text-[10px] text-gray-300 font-semibold mb-1 lg:hidden">
-              Left click to increase · Right click to decrease
+              Tap any past day to log your sleep
             </p>
           </div>
 
@@ -425,6 +424,19 @@ function SleepContent() {
           </div>
         </div>
       </div>
+
+      {/* Day picker dialog */}
+      <DayPickerDialog
+        open={selectedDay !== null}
+        day={selectedDay ?? 0}
+        month={formatMonthYear(month)}
+        currentValue={selectedDay !== null ? SLEEP_CONFIG[data[selectedDay] ?? 0]?.hours ?? 0 : 0}
+        unit="hours slept"
+        options={SLEEP_OPTIONS}
+        maxValue={14}
+        onSave={(hours) => selectedDay !== null && handleDialogSave(selectedDay, hours)}
+        onClose={() => setSelectedDay(null)}
+      />
     </AppShell>
   )
 }
